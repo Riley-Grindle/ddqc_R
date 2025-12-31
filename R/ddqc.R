@@ -86,15 +86,22 @@
 #' @return Filltered Seurat object
 #' @export
 initialQC <- function(data, basic.n.genes=100, basic.percent.mt=80, mt.prefix="MT-", rb.prefix="^RP[SL][[:digit:]]|^RPLP[[:digit:]]|^RPSA") {
-  data[["percent.mt"]] <- PercentageFeatureSet(
-    data, 
-    pattern = mt.prefix
-  )
   
-  data[["percent.rb"]] <- PercentageFeatureSet(
-    data, 
-    pattern = rb.prefix
-  )
+  if (!("percent.mt" %in% colnames(data@meta.data))){
+    data[["percent.mt"]] <- PercentageFeatureSet(
+      data, 
+      pattern = mt.prefix
+    )
+  }
+
+
+  if (!("percent.rb" %in% colnames(data@meta.data))){
+    data[["percent.rb"]] <- PercentageFeatureSet(
+      data, 
+      pattern = rb.prefix
+    )
+  }
+
   data <- subset(data, subset = nFeature_RNA >= basic.n.genes & percent.mt <= basic.percent.mt)
   return(data)
 }
