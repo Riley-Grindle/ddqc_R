@@ -154,9 +154,10 @@ ddqc.metrics <- function(data, n.pcs=50, k.param=20, res=1, threshold=2, do.coun
     passed.qc <- passed.qc & df.qc$percent.rb.passed.qc
   }
   df.qc[["passed.qc"]] <- passed.qc
-
+  if (do.mito) {
+    .ddqcBoxplot(df.qc, "percent.mt", 10, FALSE)
+  }
   .ddqcBoxplot(df.qc, "nFeature_RNA", log2(200), TRUE)
-  .ddqcBoxplot(df.qc, "percent.mt", 10, FALSE)
 
   return(df.qc)
 }
